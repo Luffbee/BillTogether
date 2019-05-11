@@ -1,10 +1,14 @@
-require 'sinatra'
 require 'data_mapper'
 require 'dm-validations'
 require 'dm-types'
+require 'fileutils'
 
+data_dir = "#{Dir.pwd}"
+db_file = File.join(data_dir, 'billtogather.db')
+
+FileUtils.mkdir_p data_dir
 DataMapper::Logger.new($stdout, :debug)
-DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/billtogather.db")
+DataMapper::setup(:default, "sqlite3://#{db_file}")
 
 class User
   include DataMapper::Resource
@@ -77,5 +81,5 @@ end
 
 DataMapper.finalize
 
-#DataMapper.auto_upgrade!
-DataMapper.auto_migrate!
+DataMapper.auto_upgrade!
+#DataMapper.auto_migrate!
