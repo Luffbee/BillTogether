@@ -9,22 +9,22 @@
 </template>
 
 <script>
+import { store } from './Store.vue'
+
 export default {
-  props: {
-    user: {
-      type: Object,
-      required: true,
-    },
+  data() {
+    return {
+      user: store.state.user,
+    }
   },
   methods: {
-    logout () {
+    logout() {
       var xhr = new XMLHttpRequest()
-      var vm = this
       xhr.onload = function() {
         if (this.status == 200) {
-          vm.$emit('logout-success')
+          store.logoutSuccess()
         } else {
-          vm.$emit('api-error', this.response.error)
+          store.apiError(this.response.error)
         }
       }
       xhr.open('POST', '/api/v1/logout')

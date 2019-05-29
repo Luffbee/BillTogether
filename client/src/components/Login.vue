@@ -13,6 +13,7 @@
 
 <script>
 import Form from './Form.vue'
+import { store } from './Store.vue'
 
 export default {
   components: {
@@ -42,12 +43,11 @@ export default {
       this.errmsg = ""
       var form = new FormData(document.getElementById(this.formId))
       var xhr = new XMLHttpRequest()
-      var vm = this
       xhr.onload = function() {
         if (this.status == 200) {
-          vm.$emit('login-success', this.response)
+          store.loginSuccess(this.response)
         } else {
-          vm.$emit('api-error', this.response.error)
+          store.apiError(this.response.error)
         }
       }
       xhr.open('POST', '/api/v1/login')

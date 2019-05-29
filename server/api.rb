@@ -9,9 +9,9 @@ require_relative 'auth'
 
 class BilltogatherAPIv1 < Sinatra::Application
   register Sinatra::Namespace
-  set :public_folder, File.join(__dir__, 'view/dist')
+  set :public_folder, File.join(__dir__, '../client/dist')
   get '/' do
-    send_file File.join(__dir__, 'view/dist/index.html')
+    send_file File.join(__dir__, '../client/dist/index.html')
   end
 
   namespace '/api/v1' do

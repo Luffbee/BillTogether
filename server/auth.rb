@@ -46,15 +46,15 @@ module Sinatra
       token = Token.encode(payload)
       response.set_cookie(:JWT, :value => token,
                           :expires => Time.now + lifelength,
-                          :path => '/',
-                          :httponly => true)
+                          :path => '/')
+                          #:httponly => true)
     end
 
     def remove_token()
       response.set_cookie(:JWT, :value => '',
                           :expires => Time.now,
-                          :path => '/',
-                          :httponly => true)
+                          :path => '/')
+                          #:httponly => true)
     end
 
     def current_user
