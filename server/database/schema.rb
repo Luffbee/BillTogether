@@ -14,6 +14,7 @@ DB.create_table(:groups) do
   primary_key :id
   String :name, null: false
   check{length(name) >= 2}
+  String :joincode, null: false
   String :desc, null: false, default: ''
   DateTime :create_time, null: false
 end

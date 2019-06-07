@@ -12,8 +12,9 @@
 </template>
 
 <script>
-import Form from './Form.vue'
-import { store } from './Store.vue'
+import Form from '../common/Form.vue'
+import { store } from '../common/Store.vue'
+import API from '../common/API.vue'
 
 export default {
   components: {
@@ -46,19 +47,10 @@ export default {
   },
   methods: {
     commit() {
-      this.errmsg = ""
       var form = new FormData(document.getElementById(this.formId))
-      var xhr = new XMLHttpRequest()
-      xhr.onload = function() {
-        if (this.status == 200) {
-          store.loginSuccess(this.response)
-        } else {
-          store.apiError(this.response.error)
-        }
-      }
-      xhr.open('POST', '/api/v1/register')
-      xhr.responseType = 'json'
-      xhr.send(form)
+      API.post('/register', (resp) => {
+        store.loginSuccess(resp)
+      }, form)
     }
   }
 }

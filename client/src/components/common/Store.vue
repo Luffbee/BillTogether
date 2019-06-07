@@ -1,8 +1,9 @@
 <script>
-import Welcome from './Welcome.vue'
-import Login from './Login.vue'
-import Register from './Register.vue'
-import Home from './Home.vue'
+import Welcome from '../Welcome.vue'
+import Login from '../user/Login.vue'
+import Register from '../user/Register.vue'
+import Home from '../Home.vue'
+
 export let store = {
   state: {
     currentView: Welcome,
@@ -51,5 +52,9 @@ export let store = {
     this.state.user = null
     this.state.currentView = Welcome
   }
+}
+
+export default {
+  store: store,
 }
 </script>

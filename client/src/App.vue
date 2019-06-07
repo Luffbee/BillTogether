@@ -1,17 +1,17 @@
 <template>
   <div id="app">
+    <div id="error" v-if="error">
+      {{ error.message }}
+    </div>
     <component
       :is="currentView"
       v-bind="props"
     ></component>
-    <div id="error" v-if="error">
-      {{ error.message }}
-    </div>
   </div>
 </template>
 
 <script>
-import { store } from './components/Store.vue'
+import { store } from './components/common/Store.vue'
 
 export default {
   name: 'app',

@@ -4,8 +4,8 @@
     <input
       :type="feild.type"
       :placeholder="feild.placeholder"
-      :id="feild.name.toLowerCase()"
-      :name="feild.name.toLowerCase()"
+      :id="feild.name.toLowerCase().split(' ').join('-')"
+      :name="feild.name.toLowerCase().split(' ').join('-')"
       :value="feild.value"
     ><br>
   </label>

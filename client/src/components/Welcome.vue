@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { store } from './Store.vue'
+import { store } from './common/Store.vue'
 
 export default {
   methods: {
