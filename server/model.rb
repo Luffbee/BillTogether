@@ -66,8 +66,17 @@ class Group < Sequel::Model
       name: self.name,
       desc: self.desc,
       create_time: self.create_time,
+      size: self.size,
       users: self.users.map { |u| u.to_api },
       joincode: self.joincode,
+    }
+  end
+
+  def to_intro
+    {
+      id: self.id,
+      name: self.name,
+      size: self.size,
     }
   end
 
@@ -88,7 +97,7 @@ end
 
 
 class Bill < Sequel::Model
-  # id, group_id, payer_id
+  # id, group_id, payer_id, desc, create_time
   many_to_one :group
   many_to_one :payer, class: :User, key: :payer_id
   one_to_many :bill_lines

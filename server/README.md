@@ -35,3 +35,7 @@ List all groups the current user in.
 ### POST /groups/{id}
 
 Join the groups with id.
+
+### GET /groups/{id}
+
+Get group details.

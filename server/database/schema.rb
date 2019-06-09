@@ -16,7 +16,7 @@ DB.create_table(:groups) do
   check{length(name) >= 2}
   String :joincode, null: false
   String :desc, null: false, default: ''
-  DateTime :create_time, null: false
+  Time :create_time, null: false
 end
 
 DB.create_table(:memberships) do
@@ -30,6 +30,8 @@ DB.create_table(:bills) do
   primary_key :id
   foreign_key :group_id, :groups, null: false
   foreign_key :payer_id, :users, null: false
+  String :desc, null: false, default: ''
+  Time :create_time, null: false
 end
 
 DB.create_table(:bill_lines) do

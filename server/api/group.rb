@@ -9,56 +9,53 @@ class BilltogatherAPIv1 < Sinatra::Application
         desc: params['description'],
         joincode: params['join-code']
       )
-      if grp.valid?
-        grp.save
-        grp.add_user(uid)
-        MultiJson.dump({
-          group: grp.to_api
-        })
-      else
-        status 400
-        MultiJson.dump({
-          error: {
-            message: grp.errors,
-          }
-        })
-      end
+      check(grp.valid?, 400, grp.errors)
+      grp.save
+      grp.add_user(uid)
+      MultiJson.dump({
+        group: grp.to_api
+      })
     end
 
     # Get group list
     get '/groups' do
       uid = current_user['id']
       MultiJson.dump({
-        grouplist: User[uid].groups.map { |g| g.to_api }
+        grouplist: User[uid].groups.map { |g| g.to_intro }
       })
     end
 
     # Join a group
     post '/groups/:id' do
       gid = params['id']
-      if gid != params['group-id']
-        halt 400, MultiJson.dump({
-          error: {
-            message: 'Form gid and URL gid is not identical.',
-          }})
-      end
+      check(gid == params['group-id'],
+            400, 'Form gid and URL gid is not identical.')
       grp = Group[gid]
+      check(!grp.nil?, 400, 'No such group: GID=' + gid.to_s)
       uid = current_user['id']
       # already in the group
-      if not (grp.nil? or grp.users_dataset[uid].nil?)
+      if !grp.users_dataset[uid].nil?
         return MultiJson.dump({
           group: grp.to_api,
         })
       end
       joincode = params['join-code']
-      if grp.nil? or grp.joincode != joincode
-        halt 403, MultiJson.dump({
-          error: {
-            message: 'Invalid group id or join code.'
-          }})
-      end
+      check(grp.joincode == joincode,
+        403, 'Invalid group id or join code.')
       uid = current_user['id']
       grp.add_user(uid)
+      MultiJson.dump({
+        group: grp.to_api,
+      })
+    end
+
+    get '/groups/:id' do
+      gid = params['id']
+      uid = current_user['id']
+      grp = Group[gid]
+      check(!grp.nil?, 400, 'Invalid group id.')
+      check(!grp.users_dataset[uid].nil?,
+            403, 'You are not in this group: GID=' + gid.to_s)
       MultiJson.dump({
         group: grp.to_api,
       })

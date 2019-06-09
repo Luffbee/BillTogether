@@ -11,9 +11,9 @@
     </template>
     <template v-else>
       <p>You are now in this group:</p>
-      <GroupInfo
+      <GroupDetail
         v-bind="group"
-      ></GroupInfo>
+      ></GroupDetail>
     </template>
     <button @click="$emit('close')">
       Close
@@ -23,13 +23,13 @@
 
 <script>
 import Form from '../common/Form.vue'
-import GroupInfo from './GroupInfo.vue'
+import GroupDetail from './GroupDetail.vue'
 import API from '../common/API.vue'
 
 export default {
   components: {
     Form,
-    GroupInfo,
+    GroupDetail,
   },
   data() {
     return {

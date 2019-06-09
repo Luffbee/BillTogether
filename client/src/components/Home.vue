@@ -1,13 +1,13 @@
 <template>
   <div id="home">
-    <div id="user-area">
-      Current user:
+    <div id="user" class="area">
+      Current user:<br>
       <UserInfo
         v-bind="user"
-      ></UserInfo>
+      ></UserInfo><br>
       <button @click="logout">Logout</button>
     </div>
-    <div id="group-area">
+    <div id="group" class="area">
       <div id="new-groups">
         <button @click="goJoinGroup">Join</button> or
         <button @click="goCreateGroup">Create</button><br>
@@ -18,7 +18,7 @@
         @groupDetail="goGroupDetail($event)"
       ></GroupList>
     </div>
-    <div id="extra-area" v-if="showExtra">
+    <div id="extra" class="area" v-if="showExtra">
       <component
         :is="extraView"
         :key="extraVV"
@@ -35,7 +35,7 @@ import { store } from './common/Store.vue'
 import API from './common/API.vue'
 import UserInfo from './user/UserInfo.vue'
 import GroupList from './group/GroupList.vue'
-import GroupInfo from './group/GroupInfo.vue'
+import GroupDetail from './group/GroupDetail.vue'
 import JoinGroup from './group/JoinGroup.vue'
 import CreateGroup from './group/CreateGroup.vue'
 
@@ -106,11 +106,13 @@ export default {
         }
       })
     },
-    updateExtraView(view, props=null) {
+    updateExtraView(view, updateVV=true, props=null) {
       this.showExtra = true
       this.extraView = view
-      this.extraVV = 1 - this.extraVV
       this.props = props
+      if (updateVV) {
+        this.extraVV = 1 - this.extraVV
+      }
     },
     goJoinGroup() {
       this.updateExtraView(JoinGroup)
@@ -119,11 +121,10 @@ export default {
       this.updateExtraView(CreateGroup)
     },
     goGroupDetail(idx) {
-      this.updateExtraView(GroupInfo,
-        {
-          detail: true,
-          ...this.groups[idx],
-        })
+      var gid = this.groups[idx].id.toString()
+      API.get('/groups/' + gid, (resp) => {
+        this.updateExtraView(GroupDetail, false, resp.group)
+      })
     }
   }
 }
@@ -133,5 +134,10 @@ export default {
 #home {
   display: flex;
   justify-content: center;
+}
+.area {
+  border: solid 1px;
+  padding: 2em;
+  margin: 1em;
 }
 </style>

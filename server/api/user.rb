@@ -7,21 +7,12 @@ class BilltogatherAPIv1 < Sinatra::Application
         email: params['email'],
       )
       user.password = params['password']
-      if user.valid?
-        user.save
-        issue_token({'id'=>user.id}, 5 * 60 * 60)
-        MultiJson.dump({
-          user: user.to_api
-        })
-      else
-        status 400
-        MultiJson.dump({
-          error: {
-            type: 'Register',
-            message: user.errors,
-          }
-        })
-      end
+      check(user.valid?, 400, user.errors)
+      user.save
+      issue_token({'id'=>user.id}, 5 * 60 * 60)
+      MultiJson.dump({
+        user: user.to_api
+      })
     end
 
     get '/user' do
@@ -30,19 +21,11 @@ class BilltogatherAPIv1 < Sinatra::Application
       MultiJson.dump({user: user.to_api})
     end
 
-    get '/user/:id' do
-      id = params['id']
-      user = User[id]
-      if user
-        MultiJson.dump({user: user.to_api})
-      else
-        halt 404, MultiJson.dump({
-          error: {
-            type: 'User',
-            message: 'Invalid user id.',
-          }
-        })
-      end
-    end
+    #get '/user/:id' do
+    #  id = params['id']
+    #  user = User[id]
+    #  check(!user.nil?, 404, 'Invalid user id.')
+    #  MultiJson.dump({user: user.to_api})
+    #end
   end
 end

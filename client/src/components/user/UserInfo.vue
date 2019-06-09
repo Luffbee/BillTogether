@@ -1,11 +1,12 @@
 <template>
-  <div @click="toggleDetail">
-    <p><em>Name:</em> {{ name }}</p>
-    <template v-if="detail">
-      <p><em>Id:</em> {{ id }}</p>
-      <p><em>Email:</em> {{ email }}</p>
-    </template>
-  </div>
+  <span @click="toggleDetail" class="user-info">
+      {{ name }}
+      <div class="popup" v-if="detail">
+        <em>Id:</em> {{ id }}
+        <em>Name:</em> {{ name }}<br>
+        <em>Email:</em> {{ email }}
+      </div>
+  </span>
 </template>
 
 <script>
@@ -27,3 +28,19 @@ export default {
   }
 }
 </script>
+
+<style>
+.user-info {
+  position: relative;
+  cursor: pointer;
+}
+.popup {
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  left: 0%;
+  width: max-content;
+  border: solid 1px;
+  background: white;
+}
+</style>

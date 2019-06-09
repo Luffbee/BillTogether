@@ -2,24 +2,23 @@
   <ul>
     <li v-for="group in groups" :key="group.id">
       <div @click="$emit('groupDetail', group.idx)">
-        <GroupInfo
-          :detail="false"
+        <GroupIntro
           v-bind="group"
-        ></GroupInfo>
+        ></GroupIntro>
       </div>
     </li>
   </ul>
 </template>
 
 <script>
-import GroupInfo from './GroupInfo.vue'
+import GroupIntro from './GroupIntro.vue'
 
 export default {
   props: {
     groups: Array,
   },
   components: {
-    GroupInfo,
+    GroupIntro,
   },
 }
 </script>

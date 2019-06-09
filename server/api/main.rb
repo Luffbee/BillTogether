@@ -5,16 +5,22 @@ class BilltogatherAPIv1 < Sinatra::Application
       '/register',
     ].map {|r| '/api/v1' + r}
 
+    helpers do
+      def check(cond, statuscode, errormsg)
+        if not cond
+          halt statuscode, MultiJson.dump({
+            error: {
+              message: errormsg,
+            }
+          })
+        end
+      end
+    end
+
     before do
       authenticate!
       if !authenticated?
-        pass if NOFORCEAUTH.include? request.path_info
-        halt 401, MultiJson.dump({
-          error: {
-            type: 'Authentication',
-            message: auth_error,
-          }
-        })
+        check(NOFORCEAUTH.include?(request.path_info), 401, auth_error)
       end
     end
 

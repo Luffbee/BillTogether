@@ -2,23 +2,13 @@ class BilltogatherAPIv1 < Sinatra::Application
   namespace '/api/v1' do
 
     post '/login' do
-      err = MultiJson.dump({
-        error: {
-          type: 'Login',
-          message: 'Invalid email or password.',
-        }
-      })
+      err = 'Invalid email or password.'
       user = User.where(email: params['email'])
-      if user.count != 1
-        halt 401, err
-      end
+      check(user.count == 1, 401, err)
       user = user.first
-      if user.password == params['password']
-        issue_token({'id'=>user.id}, 5 * 60 * 60)
-        MultiJson.dump({user: user.to_api})
-      else
-        halt 401, err
-      end
+      check(user.password == params['password'], 401, err)
+      issue_token({'id'=>user.id}, 5 * 60 * 60)
+      MultiJson.dump({user: user.to_api})
     end
 
     post '/logout' do
