@@ -6,22 +6,34 @@
     <p><em>Join Code:</em> {{ joincode }}</p>
     <p>{{ desc }}</p>
     <p>
-      <em @click="showUsers = !showUsers">Users</em>
-      <ul v-if="showUsers">
-        <li v-for="user in users" :key="user.id">
-          <UserInfo
-            v-bind="user"
-          ></UserInfo>
-        </li>
-      </ul>
+    <em @click="showUsers = !showUsers">Users</em>
+    <ul v-if="showUsers">
+      <li v-for="user in users" :key="user.id">
+        <UserInfo
+          v-bind="user"
+        ></UserInfo>
+      </li>
+    </ul>
+    </p>
+    <p>
+    <ul>
+      <li v-for="bill in bills" :key="bill.id">
+        <BillInfo v-bind="bill"></BillInfo>
+      </li>
+    </ul>
     </p>
   </div>
 </template>
 
 <script>
 import UserInfo from '../user/UserInfo.vue'
+import BillInfo from '../bill/BillInfo.vue'
 
 export default {
+  components: {
+    UserInfo,
+    BillInfo,
+  },
   props: {
     id: Number,
     name: String,
@@ -30,9 +42,6 @@ export default {
     size: Number,
     users: Array,
     joincode: String,
-  },
-  components: {
-    UserInfo,
   },
   data() {
     return {

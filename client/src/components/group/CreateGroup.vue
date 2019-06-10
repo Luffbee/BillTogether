@@ -59,11 +59,11 @@ export default {
   },
   methods: {
     commit() {
-      var form = new FormData(document.getElementById(this.formId))
+      var data = API.form2obj(this.formId)
       API.post('/groups', (resp) => {
         this.group = resp.group
         this.$emit('update')
-      }, form)
+      }, data)
     }
   }
 }

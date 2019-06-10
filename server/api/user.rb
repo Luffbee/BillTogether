@@ -3,10 +3,10 @@ class BilltogatherAPIv1 < Sinatra::Application
 
     post '/register' do
       user = User.new(
-        name: params['name'],
-        email: params['email'],
+        name: data['name'],
+        email: data['email'],
       )
-      user.password = params['password']
+      user.password = data['password']
       check(user.valid?, 400, user.errors)
       user.save
       issue_token({'id'=>user.id}, 5 * 60 * 60)

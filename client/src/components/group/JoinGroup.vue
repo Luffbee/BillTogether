@@ -53,12 +53,12 @@ export default {
   },
   methods: {
     commit() {
-      var form = new FormData(document.getElementById(this.formId))
-      var gid = form.get('group-id').toString()
+      var data = API.form2obj(this.formId)
+      var gid = data['group-id'].toString()
       API.post('/groups/' + gid, (resp) => {
         this.group = resp.group
         this.$emit('update')
-      }, form)
+      }, data)
     }
   }
 }

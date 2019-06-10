@@ -12,7 +12,7 @@ function v1Req(method, uri, callback, body=null) {
   }
   xhr.open(method, '/api/v1' + uri)
   xhr.responseType = 'json'
-  xhr.send(body)
+  xhr.send(JSON.stringify(body))
 }
 
 let request = v1Req
@@ -23,6 +23,12 @@ export default {
   },
   post: (uri, callback, body=null) => {
     request('POST', uri, callback, body)
+  },
+  form2obj: (formId) => {
+    var form = new FormData(document.getElementById(formId))
+    var data = {}
+    form.forEach((v, k) => { data[k] = v })
+    return data
   },
 }
 </script>

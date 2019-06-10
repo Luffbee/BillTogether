@@ -3,10 +3,11 @@ class BilltogatherAPIv1 < Sinatra::Application
 
     post '/login' do
       err = 'Invalid email or password.'
-      user = User.where(email: params['email'])
+      user = User.where(email: data['email'])
       check(user.count == 1, 401, err)
       user = user.first
-      check(user.password == params['password'], 401, err)
+      check(user.password == data['password'], 401, err)
+      # TODO: CSRF protection
       issue_token({'id'=>user.id}, 5 * 60 * 60)
       MultiJson.dump({user: user.to_api})
     end

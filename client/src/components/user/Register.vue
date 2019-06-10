@@ -47,10 +47,10 @@ export default {
   },
   methods: {
     commit() {
-      var form = new FormData(document.getElementById(this.formId))
+      var data = API.form2obj(this.formId)
       API.post('/register', (resp) => {
         store.loginSuccess(resp)
-      }, form)
+      }, data)
     }
   }
 }

@@ -5,9 +5,9 @@ class BilltogatherAPIv1 < Sinatra::Application
     post '/groups' do
       uid = current_user['id']
       grp = Group.new(
-        name: params['group-name'],
-        desc: params['description'],
-        joincode: params['join-code']
+        name: data['group-name'],
+        desc: data['description'],
+        joincode: data['join-code']
       )
       check(grp.valid?, 400, grp.errors)
       grp.save
@@ -28,7 +28,7 @@ class BilltogatherAPIv1 < Sinatra::Application
     # Join a group
     post '/groups/:id' do
       gid = params['id']
-      check(gid == params['group-id'],
+      check(gid == data['group-id'],
             400, 'Form gid and URL gid is not identical.')
       grp = Group[gid]
       check(!grp.nil?, 400, 'No such group: GID=' + gid.to_s)
@@ -39,7 +39,7 @@ class BilltogatherAPIv1 < Sinatra::Application
           group: grp.to_api,
         })
       end
-      joincode = params['join-code']
+      joincode = data['join-code']
       check(grp.joincode == joincode,
         403, 'Invalid group id or join code.')
       uid = current_user['id']
